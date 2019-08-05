@@ -5,16 +5,7 @@ export class Todolist extends React.Component {
 		this.state = {
 			list: []
 		};
-		this.onAddItem = this.onAddItem.bind(this);
 	}
-
-	onAddItem = e => {
-		let newItem = e.target.value;
-		this.setState({
-			list: this.state.list.concat(newItem)
-		});
-	};
-
 	render() {
 		return (
 			<React.Fragment>
@@ -26,14 +17,29 @@ export class Todolist extends React.Component {
 								placeholder="Add Items"
 								type="text"
 								onKeyPress={e =>
-									e.charCode === 13 ? this.onAddItem(e) : null
+									e.charCode === 13 &&
+									this.setState({
+										list: this.state.list.concat(
+											e.target.value
+										)
+									})
 								}
 							/>
 						</div>
 						<ul className="list-group">
 							{this.state.list.map((value, index) => (
 								<li key={index} className="list-group-item">
-									{value}
+									{value}{" "}
+									<button
+										onClick={e =>
+											this.setState({
+												list: this.state.list.filter(
+													(item, i) => i !== index
+												)
+											})
+										}>
+										delete
+									</button>
 								</li>
 							))}
 						</ul>
